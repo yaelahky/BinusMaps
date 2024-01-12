@@ -1,12 +1,13 @@
 import {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {getAllNotes} from '../../helpers';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 const useHome = () => {
   const navigation = useNavigation();
 
   const [data, setData] = useState([]);
+
+  const userName = useRoute().params?.name;
 
   const getData = async () => {
     const dataNotes = await getAllNotes();
@@ -27,6 +28,7 @@ const useHome = () => {
     },
     state: {
       data,
+      userName,
     },
     func: {},
   };

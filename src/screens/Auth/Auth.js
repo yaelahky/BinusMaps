@@ -1,6 +1,13 @@
 import React from 'react';
-import {Image, StatusBar, Text, TouchableOpacity, View} from 'react-native';
-import {heroFingerprint} from '../../assets';
+import {
+  ImageBackground,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {bgBinus} from '../../assets';
 import useAuth from './useAuth';
 
 let contextValue = {};
@@ -13,45 +20,62 @@ const Auth = () => {
 
   return (
     <AuthContext.Provider value={contextValue}>
-      <StatusBar backgroundColor="#009043" barStyle="dark-content" />
-      <View
+      <StatusBar backgroundColor="#0397DA" barStyle="dark-content" />
+      <ImageBackground
+        source={bgBinus}
+        resizeMode="cover"
         style={{
+          flex: 1,
           height: '100%',
-          backgroundColor: '#FFF',
+          backgroundColor: 'red',
           justifyContent: 'center',
-          padding: 16,
         }}>
-        <Text
-          style={{
-            fontWeight: '800',
-            fontSize: 32,
-            textAlign: 'center',
-            color: '#080808',
-          }}>
-          Simple Secure Note
-        </Text>
-        <Text style={{marginTop: 12, fontSize: 14, textAlign: 'center'}}>
-          Lockbox of Trust - A Personal Vault of Confidential Information
-        </Text>
-        <View style={{alignItems: 'center', marginTop: 70, marginBottom: 100}}>
-          <Image source={heroFingerprint} style={{height: 180, width: 180}} />
-        </View>
-        <TouchableOpacity
-          onPress={func.handleRequestBiometric}
-          activeOpacity={0.5}
-          style={{backgroundColor: '#009043', padding: 16, borderRadius: 32}}>
-          <View style={{alignItems: 'center'}}>
-            <Text style={{fontWeight: '500', fontSize: 14, color: 'white'}}>
-              Unlock Using Biometrics
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={func.handleLinkedInPress}>
-          <Text style={{marginTop: 16, fontSize: 12, textAlign: 'center'}}>
-            Made with 💖 by Ananda Rizky Yuliansyah{'\n'}for Atask.id Pre-test
+        <View style={{padding: 16}}>
+          <Text
+            style={{
+              fontWeight: '800',
+              fontSize: 32,
+              textAlign: 'center',
+              color: '#080808',
+            }}>
+            Cari Lokasi Universitas Bina Nusantara
           </Text>
-        </TouchableOpacity>
-      </View>
+          <Text style={{marginTop: 12, fontSize: 14, textAlign: 'center'}}>
+            Binus Maps - Cari lokasi dengan mudah
+          </Text>
+          <View style={{marginTop: 64, marginBottom: 32}}>
+            <View
+              style={{backgroundColor: 'white', padding: 4, borderRadius: 16}}>
+              <TextInput
+                onChangeText={text => func.setName(text)}
+                value={state.name}
+                style={{
+                  fontWeight: '400',
+                  fontSize: 16,
+                  color: '#080808',
+                }}
+                placeholder="Masukkan Nama Lengkap"
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={func.handleRequestBiometric}
+            activeOpacity={0.5}
+            style={{backgroundColor: '#0397DA', padding: 16, borderRadius: 32}}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={{fontWeight: '500', fontSize: 14, color: 'white'}}>
+                Masuk
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={func.handleLinkedInPress}>
+            <Text style={{marginTop: 16, fontSize: 12, textAlign: 'center'}}>
+              Made with ❤ by Ananda Rizky Yuliansyah{'\n'}for Personal
+              Assignment 2
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </AuthContext.Provider>
   );
 };

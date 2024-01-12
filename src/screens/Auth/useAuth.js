@@ -1,9 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import {Alert, Linking, Platform, ToastAndroid} from 'react-native';
+import {useState} from 'react';
 
 const useAuth = () => {
   const navigation = useNavigation();
+
+  const [name, setName] = useState('');
 
   const showToast = message => {
     if (Platform.OS === 'android') {
@@ -14,10 +17,15 @@ const useAuth = () => {
   };
 
   const navigateToHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Home', {name});
   };
 
   const handleRequestBiometric = async () => {
+    if (name === '') {
+      showToast('Nama tidak boleh kosong');
+      return;
+    }
+
     const rnBiometrics = new ReactNativeBiometrics();
 
     const {available} = await rnBiometrics.isSensorAvailable();
@@ -29,12 +37,12 @@ const useAuth = () => {
           showToast('Biometric authentication success');
           navigateToHome();
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
           showToast('Biometric authentication failed');
         });
     } else {
-      showToast('Biometric authentication not supported');
+      navigateToHome();
+      showToast('Biometric authentication not supported, bypass auth...');
     }
   };
 
@@ -46,10 +54,13 @@ const useAuth = () => {
     nav: {
       navigateToHome,
     },
-    state: {},
+    state: {
+      name,
+    },
     func: {
       handleRequestBiometric,
       handleLinkedInPress,
+      setName,
     },
   };
 };

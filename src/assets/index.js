@@ -1,6 +1,3 @@
-// Import the hero-fingerprint object from another file
-import heroFingerprint from './hero-fingerprint.jpg';
-import emptyState from './empty-state.png';
+import bgBinus from './bg-binus.jpg';
 
-// Export the hero-fingerprint object
-export {heroFingerprint, emptyState};
+export {bgBinus};
