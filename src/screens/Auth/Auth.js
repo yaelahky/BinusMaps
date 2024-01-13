@@ -27,7 +27,6 @@ const Auth = () => {
         style={{
           flex: 1,
           height: '100%',
-          backgroundColor: 'red',
           justifyContent: 'center',
         }}>
         <View style={{padding: 16}}>
