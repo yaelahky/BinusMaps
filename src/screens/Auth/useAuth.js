@@ -1,12 +1,37 @@
 import {useNavigation} from '@react-navigation/native';
-import ReactNativeBiometrics from 'react-native-biometrics';
-import {Alert, Linking, Platform, ToastAndroid} from 'react-native';
-import {useState} from 'react';
+import {Alert, Platform, ToastAndroid} from 'react-native';
+import {useEffect} from 'react';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const useAuth = () => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState('');
+  useEffect(() => {
+    GoogleSignin.configure({
+      androidClientId: 'YOURKEY.apps.googleusercontent.com',
+      webClientId: 'YOURKEY.apps.googleusercontent.com',
+      iosClientId: 'YOURKEY.googleusercontent.com',
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+    });
+  }, []);
+
+  const googleSignUp = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn()
+        .then(() => {
+          GoogleSignin.getTokens().then(res => {
+            navigateToHome();
+          });
+        })
+        .catch(() => {
+          showToast('Autentikasi dibatalkan.');
+        });
+    } catch (error) {
+      showToast(error);
+    }
+  };
 
   const showToast = message => {
     if (Platform.OS === 'android') {
@@ -17,50 +42,20 @@ const useAuth = () => {
   };
 
   const navigateToHome = () => {
-    navigation.navigate('Home', {name});
+    navigation.navigate('Home');
   };
 
   const handleRequestBiometric = async () => {
-    if (name === '') {
-      showToast('Nama tidak boleh kosong');
-      return;
-    }
-
-    const rnBiometrics = new ReactNativeBiometrics();
-
-    const {available} = await rnBiometrics.isSensorAvailable();
-
-    if (available) {
-      rnBiometrics
-        .simplePrompt({promptMessage: 'Verifikasi dengan sidik jari'})
-        .then(() => {
-          showToast('Biometric authentication success');
-          navigateToHome();
-        })
-        .catch(() => {
-          showToast('Biometric authentication failed');
-        });
-    } else {
-      navigateToHome();
-      showToast('Biometric authentication not supported, bypass auth...');
-    }
-  };
-
-  const handleLinkedInPress = () => {
-    Linking.openURL('https://www.linkedin.com/in/ananda-rizky-yuliansyah');
+    googleSignUp();
   };
 
   return {
     nav: {
       navigateToHome,
     },
-    state: {
-      name,
-    },
+    state: {},
     func: {
       handleRequestBiometric,
-      handleLinkedInPress,
-      setName,
     },
   };
 };

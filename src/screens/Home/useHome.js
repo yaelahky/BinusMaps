@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {getAllNotes} from '../../helpers';
 
 const useHome = () => {
@@ -7,7 +7,7 @@ const useHome = () => {
 
   const [data, setData] = useState([]);
 
-  const userName = useRoute().params?.name;
+  const userName = 'Binusian';
 
   const getData = async () => {
     const dataNotes = await getAllNotes();
